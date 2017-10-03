@@ -20,7 +20,7 @@ public:
     // createFile(...)
 
     /* Creates a folder in the filesystem */
-    // createFolderi(...);
+    // createFolder(...);
 
     /* Removes a file in the filesystem */
     // removeFile(...);

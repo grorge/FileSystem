@@ -1,0 +1,75 @@
+/root/aaa/
+/root/ccc/
+/root
+/root
+/root
+/root
+/root
+/root
+/root
+/aaa/hej							hej.exe
+/aaa/bbb/
+/aaa
+/aaa
+/aaa
+/aaa
+/aaa
+/aaa
+/aaa
+/aaa
+/aaa//bbb
+/aaa//bbb
+/aaa//bbb
+/aaa//bbb
+/aaa/bbb/korv						korv#25
+/aaa//bbb							.exe
+/aaa//bbb
+/aaa//bbb
+/aaa//bbb
+/aaa//bbb
+/ccc
+/ccc
+/ccc
+/ccc
+/ccc
+/ccc
+/ccc
+/ccc
+/ccc
+/ccc
+
+root/
+
+
+
+cat /aaa//bbb/korv
+
+root/
+
+
+for array[i] == fliepath
+	return i
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
