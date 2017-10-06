@@ -35,8 +35,13 @@ Block& MemBlockDevice::operator[](int index) const {
 }
 
 int MemBlockDevice::spaceLeft() const {
-    /* Not yet implemented */
-    return 0;
+	int j = 0;
+	for (int i = 0; i < this->nrOfBlocks/2; i++)
+	{
+		if (this->memBlocks[i][0] == 0)
+			j++;
+	}
+    return j;
 }
 
 int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
@@ -83,7 +88,7 @@ Block MemBlockDevice::readBlock(int blockNr) const {
 /* Resets all the blocks */
 void MemBlockDevice::reset() {
     for (int i = 0; i < this->nrOfBlocks; ++i) {
-        this->memBlocks[i].reset('0');
+        this->memBlocks[i].reset(0);
     }
 }
 

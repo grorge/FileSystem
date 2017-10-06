@@ -17,12 +17,27 @@ bool quit();
 std::string help();
 
 /* More functions ... */
+void formatDisk(FileSystem &fs);
+void listDir(FileSystem &fs);
+void createFile(FileSystem &fs, const std::string userCommand);
+void printFile(FileSystem &fs , const std::string userCommand);
+void save(FileSystem &fs);
+void load(FileSystem &fs);
+void removeFile(FileSystem &fs, const std::string userCommand);
+void copyFile(FileSystem &fs, const std::string userCommand, const std::string newFile);
+void makeDir(FileSystem &fs, const std::string userCommand);
+void changeDir(FileSystem &fs, const std::string userCommand);
+void printCurrDir(FileSystem &fs);
+
+
 
 int main(void) {
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
 	std::string currentDir = "/";    // current directory, used for output
+
+	FileSystem fs;
 
     bool bRun = true;
 
@@ -40,31 +55,42 @@ int main(void) {
 				bRun = quit();                
                 break;
             case 1: // format
+				formatDisk(fs);
                 break;
             case 2: // ls
                 std::cout << "Listing directory" << std::endl;
+				listDir(fs);
                 break;
             case 3: // create
+				createFile(fs, commandArr[1]);
                 break;
             case 4: // cat
+				printFile(fs, commandArr[1]);
                 break;
             case 5: // createImage
+				save(fs);
                 break;
             case 6: // restoreImage
+				load(fs);
                 break;
             case 7: // rm
+				removeFile(fs, commandArr[1]);
                 break;
             case 8: // cp
+				copyFile(fs, commandArr[1], commandArr[2]);
                 break;
             case 9: // append
                 break;
             case 10: // mv
                 break;
             case 11: // mkdir
+				makeDir(fs, commandArr[1]);
                 break;
             case 12: // cd
+				changeDir(fs, commandArr[1]);
                 break;
             case 13: // pwd
+				printCurrDir(fs);
                 break;
             case 14: // help
                 std::cout << help() << std::endl;
@@ -125,6 +151,61 @@ std::string help() {
     helpStr += "* pwd:                              Get current working directory\n";
     helpStr += "* help:                             Prints this help screen\n";
     return helpStr;
+}
+
+void formatDisk(FileSystem &fs)
+{
+	fs = FileSystem();
+}
+
+void listDir(FileSystem &fs)
+{
+	std::cout << std::endl;
+	std::cout << fs.listDir() << std::endl;
+}
+
+void createFile(FileSystem &fs, const std::string userCommand)
+{	
+	std::cout << "Data: ";
+	std::string fileData;
+	getline(std::cin, fileData);
+	fs.createFile(userCommand, fileData);
+	std::cout << std::endl;
+}
+
+void printFile(FileSystem &fs, const std::string userCommand)
+{
+}
+
+void save(FileSystem &fs)
+{
+}
+
+void load(FileSystem &fs)
+{
+}
+
+void removeFile(FileSystem &fs, const std::string userCommand)
+{
+	fs.removeFile(userCommand);
+}
+
+void copyFile(FileSystem &fs, const std::string userCommand, const std::string newFile)
+{
+}
+
+void makeDir(FileSystem &fs, const std::string userCommand)
+{
+	fs.createFolder(userCommand);
+}
+
+void changeDir(FileSystem &fs, const std::string userCommand)
+{
+	fs.goToFolder(userCommand);
+}
+
+void printCurrDir(FileSystem &fs)
+{
 }
 
 /* Insert code for your shell functions and call them from the switch-case */
