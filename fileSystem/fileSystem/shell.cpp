@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sstream>
+#include <crtdbg.h>
+#include <fstream>
 #include "filesystem.h"
 
 const int MAXCOMMANDS = 8;
@@ -21,23 +23,32 @@ void formatDisk(FileSystem &fs);
 void listDir(FileSystem &fs);
 void createFile(FileSystem &fs, const std::string userCommand);
 void printFile(FileSystem &fs , const std::string userCommand);
-void save(FileSystem &fs);
-void load(FileSystem &fs);
+void save(FileSystem &fs, const std::string userCommand);
+void load(FileSystem &fs, const std::string userCommand);
 void removeFile(FileSystem &fs, const std::string userCommand);
-void copyFile(FileSystem &fs, const std::string userCommand, const std::string newFile);
+void copyFile(FileSystem &fs, const std::string source, const std::string destination);
 void makeDir(FileSystem &fs, const std::string userCommand);
 void changeDir(FileSystem &fs, const std::string userCommand);
-void printCurrDir(FileSystem &fs);
 
 
 
 int main(void) {
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
 	std::string currentDir = "/";    // current directory, used for output
 
 	FileSystem fs;
+
+	/*  CONTENTS IN DEFAULT
+	fs.createFolder("/aaa/");
+	fs.createFolder("/bbb/");
+	fs.createFile("/bbb/testfile3", "test3");
+	fs.createFile("/aaa/testfile1", "test1");
+	fs.createFile("/testfile2", "test2");
+	*/
 
     bool bRun = true;
 
@@ -68,10 +79,10 @@ int main(void) {
 				printFile(fs, commandArr[1]);
                 break;
             case 5: // createImage
-				save(fs);
+				save(fs, commandArr[1]);
                 break;
             case 6: // restoreImage
-				load(fs);
+				load(fs, commandArr[1]);
                 break;
             case 7: // rm
 				removeFile(fs, commandArr[1]);
@@ -88,9 +99,10 @@ int main(void) {
                 break;
             case 12: // cd
 				changeDir(fs, commandArr[1]);
+				currentDir = commandArr[1];
                 break;
             case 13: // pwd
-				printCurrDir(fs);
+				std::cout << currentDir << std::endl;
                 break;
             case 14: // help
                 std::cout << help() << std::endl;
@@ -175,14 +187,33 @@ void createFile(FileSystem &fs, const std::string userCommand)
 
 void printFile(FileSystem &fs, const std::string userCommand)
 {
+	std::cout << "Found data: ";
+	std::cout << fs.printFile(userCommand) << std::endl;
 }
 
-void save(FileSystem &fs)
+void save(FileSystem &fs, const std::string userCommand)
 {
+	std::ofstream saveFile(userCommand);
+
+	if(saveFile.is_open())
+		saveFile << fs.toString();
+
+	saveFile.close();
 }
 
-void load(FileSystem &fs)
+void load(FileSystem &fs, const std::string userCommand)
 {
+	std::string line;
+	std::ifstream loadFile(userCommand);
+	formatDisk(fs);
+
+	for (int i = 0; i < 250 && loadFile.is_open(); i++)
+	{
+		std::getline(loadFile, line);
+		fs.insert(line, i);
+	}
+	fs.calcNrOfUsed();
+	loadFile.close();
 }
 
 void removeFile(FileSystem &fs, const std::string userCommand)
@@ -190,8 +221,9 @@ void removeFile(FileSystem &fs, const std::string userCommand)
 	fs.removeFile(userCommand);
 }
 
-void copyFile(FileSystem &fs, const std::string userCommand, const std::string newFile)
+void copyFile(FileSystem &fs, const std::string source, const std::string desination)
 {
+	fs.createFile(desination, fs.printFile(source));
 }
 
 void makeDir(FileSystem &fs, const std::string userCommand)
@@ -202,10 +234,6 @@ void makeDir(FileSystem &fs, const std::string userCommand)
 void changeDir(FileSystem &fs, const std::string userCommand)
 {
 	fs.goToFolder(userCommand);
-}
-
-void printCurrDir(FileSystem &fs)
-{
 }
 
 /* Insert code for your shell functions and call them from the switch-case */

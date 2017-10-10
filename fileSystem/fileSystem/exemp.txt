@@ -27,8 +27,10 @@ for array[i] == filepath
 
 
 
-
-
+	
+	createFile("/bbb/testfile3", "test");
+	createFile("/aaa/testfile1", "test");
+	createFile("/testfile2", "test");
 
 
 
@@ -37,6 +39,11 @@ for array[i] == filepath
 
 /root/aaa/hej
 /root/aaa/hej#hejsan på dig
+
+
+
+
+
 
 
 

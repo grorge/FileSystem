@@ -10,6 +10,11 @@ private:
     // Here you can add your own data structures
 	int nrOfUsed;
 	std::string currDir;
+
+	std::string vacuum(const std::string& str);
+	std::string fill(const std::string& str);
+	int getFileIndex(const std::string& filePath);
+
 public:
     FileSystem();
     ~FileSystem();
@@ -38,6 +43,12 @@ public:
 
 
     /* Add your own member-functions if needed */
+	std::string listAll();
+	std::string printFile(const std::string &filePath);
+
+	std::string toString();
+	void insert(const std::string& data, const int i);
+	void calcNrOfUsed();
 };
 
 #endif // FILESYSTEM_H
