@@ -66,7 +66,8 @@ int main(void) {
 				bRun = quit();                
                 break;
             case 1: // format
-				formatDisk(fs);
+				formatDisk(fs); 
+				currentDir = fs.currDir;
                 break;
             case 2: // ls
                 std::cout << "Listing directory" << std::endl;
@@ -99,7 +100,7 @@ int main(void) {
                 break;
             case 12: // cd
 				changeDir(fs, commandArr[1]);
-				currentDir = commandArr[1];
+				currentDir = fs.currDir;
                 break;
             case 13: // pwd
 				std::cout << currentDir << std::endl;

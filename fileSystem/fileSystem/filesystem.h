@@ -9,13 +9,13 @@ private:
     MemBlockDevice mMemblockDevice;
     // Here you can add your own data structures
 	int nrOfUsed;
-	std::string currDir;
 
 	std::string vacuum(const std::string& str);
 	std::string fill(const std::string& str);
 	int getFileIndex(const std::string& filePath);
 
 public:
+	std::string currDir;
     FileSystem();
     ~FileSystem();
 

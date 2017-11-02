@@ -1,8 +1,10 @@
 #include "filesystem.h"
 
 FileSystem::FileSystem() {
-	this->nrOfUsed = 0;
 	this->currDir = "/";
+	this->nrOfUsed = 0;
+	this->createFolder("/");
+	this->goToFolder("/");
 }
 
 FileSystem::~FileSystem() {
@@ -52,16 +54,20 @@ void FileSystem::removeFile(const std::string & filePath)
 {
 	int i = this->getFileIndex(filePath);
 
-	if (i != -1)
+	if (i != -1
+		// Not a folder
+		&& this->mMemblockDevice[250 - 1 - this->getFileIndex(filePath)].toString()[0] != '#'
+		&& this->mMemblockDevice[250 - 1 - this->getFileIndex(filePath)].toString()[1] != 'F')
 	{
 		this->mMemblockDevice[i].reset();
 		this->mMemblockDevice[this->mMemblockDevice.size() - i - 1].reset();
 
+		this->nrOfUsed--;
 		//Unnecessary if we remove the last file in memory
 		this->mMemblockDevice.writeBlock(i, this->mMemblockDevice[this->nrOfUsed].toString());
 		this->mMemblockDevice.writeBlock(this->mMemblockDevice.size() - i - 1, this->mMemblockDevice[this->mMemblockDevice.size() - this->nrOfUsed - 1].toString());
 
-		this->nrOfUsed--;
+		this->mMemblockDevice[this->nrOfUsed].reset();
 	}
 }
 
@@ -74,8 +80,11 @@ void FileSystem::removeFolder(const std::string & folderPath)
 
 void FileSystem::goToFolder(const std::string &folderPath)
 {
-	// Limit to available folders
-	this->currDir = folderPath;
+	// Limited to available folders
+	if (this->getFileIndex(folderPath) != -1 
+		&& this->mMemblockDevice[250 - 1 - this->getFileIndex(folderPath)].toString()[0] == '#'
+		&& this->mMemblockDevice[250 - 1 - this->getFileIndex(folderPath)].toString()[1] == 'F')
+		this->currDir = folderPath;
 }
 
 std::string FileSystem::listDir()
